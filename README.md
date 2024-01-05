@@ -12,7 +12,7 @@ Table of Contents
 
 ## Instructions
 
-This project explains how to run locally (or using docker) a gitea instance like to create a selfsigned CA certificated exposing 
+This project explains how to run locally (or using docker) a gitea instance like to create a selfsigned CA certificate exposing 
 the server using HTTPS with minimal effort ;-)
 
 ### Gitea binary
@@ -22,11 +22,11 @@ the server using HTTPS with minimal effort ;-)
 wget -O gitea https://dl.gitea.com/gitea/1.21.3/gitea-1.21.3-darwin-10.12-arm64
 chmod +x gitea
 ```
-or install it using `brew` tool: `brew install gitea
+or install it using `homebrew` tool: `brew install gitea`
 
 Next, verify that the binary is working: `gitea -h`
 
-When, this is done, you will have to create a config app.ini file with the following content:
+When this is done, you will have to create a config app.ini file with the following content:
 
 ```bash
 mkdir -p custom/conf
@@ -45,13 +45,12 @@ PROTOCOL = http
 HTTP_PORT = 3333
 EOF
 ```
-- Launch gitea server
+- Launch the gitea server
 ```bash
 GITEA_WORK_DIR=$HOME/code/gitea/my-gitea \
 GITEA_CUSTOM=$GITEA_WORK_DIR/custom \
   gitea web -c custom/conf/app.ini
 ```
-
 - Create an admin user
 ```bash
 export GITEA_WORK_DIR=$HOME/code/gitea/my-gitea
@@ -66,7 +65,7 @@ PROTOCOL = https
 CERT_FILE = ../pki/gitea/cert.pem
 KEY_FILE = ../pki/gitea/key.pem
 ```
-**NOTe**: Don't forget top restart the server
+**NOTE**: Don't forget top restart the server
 
 ### Docker compose
 
