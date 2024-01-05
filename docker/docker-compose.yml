@@ -1,0 +1,29 @@
+version: "3"
+
+networks:
+  gitea:
+    external: false
+
+services:
+  server:
+    image: gitea/gitea:latest
+    container_name: gitea
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - GITEA__server__PROTOCOL  = https
+      - GITEA__server__ROOT_URL  = https://127.0.0.1:3333/gitea
+      - GITEA__server__HTTP_PORT = 3333
+      - GITEA__server__CERT_FILE = pki/cert.pem
+      - GITEA__server__KEY_FILE  = pki/key.pem
+      # GITEA__server__REDIRECT_OTHER_PORT=true
+    restart: always
+    networks:
+      - gitea
+    volumes:
+      - ./gitea:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "3333:3000"
+      - "222:22"
