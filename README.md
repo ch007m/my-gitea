@@ -105,7 +105,7 @@ docker-compose down; docker-compose up -d; docker-compose logs -f
 
 ### PKI
 
-this section describes different approaches to generate a selfsigned certificate for the `localhost` including also a [CA](https://en.wikipedia.org/wiki/Certificate_authority) (not trusted) certificate to be used by the gitea server.
+This section describes different approaches to generate a selfsigned certificate for the `localhost` including also a [CA](https://en.wikipedia.org/wiki/Certificate_authority) (not trusted) certificate to be used by the gitea server.
 
 **NOTE**: You can also use [certbot](https://github.com/certbot/certbot) if you would like to generate a certificate for a domain name (e.g gitea.example.com, etc). 
 
