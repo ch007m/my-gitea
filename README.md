@@ -1,4 +1,19 @@
+Table of Contents
+=================
+
+* [Instructions](#instructions)
+    * [Gitea binary](#gitea-binary)
+    * [Docker compose](#docker-compose)
+    * [PKI](#pki)
+        * [Gitea client](#gitea-client)
+        * [OpenSSL](#openssl)
+        * [mkcert](#mkcert)
+        * [minica](#minica)
+
 ## Instructions
+
+This project explains how to run locally (or using docker) a gitea instance like to create a selfsigned CA certificated exposing 
+the server using HTTPS with minimal effort ;-)
 
 ### Gitea binary
 
