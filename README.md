@@ -17,18 +17,17 @@ the server using HTTPS with minimal effort ;-)
 
 ### Gitea binary
 
-- Download the binary
+- Download the binary (see [doc](https://docs.gitea.com/installation/install-from-binary))
 ```bash
 wget -O gitea https://dl.gitea.com/gitea/1.21.3/gitea-1.21.3-darwin-10.12-arm64
 chmod +x gitea
-
-or 
-
-brew install gitea
-
-gitea -h
 ```
-- Create app.ini file
+or install it using `brew` tool: `brew install gitea
+
+Next, verify that the binary is working: `gitea -h`
+
+When, this is done, you will have to create a config app.ini file with the following content:
+
 ```bash
 mkdir -p custom/conf
 cat <<EOF > custom/conf/app.ini
@@ -60,17 +59,18 @@ export GITEA_CUSTOM=$GITEA_WORK_DIR/custom
 gitea admin user create --admin --username gitea_admin --password gitea_admin --email "gitea@local.domain" --must-change-password=false
 gitea admin user change-password --username gitea_admin --password gitea_admin
 ```
-- Next, you can cutomize the `custom/conf/app.ini` file and restart the server
+- Next, you can customize the `custom/conf/app.ini` file to by example configure the TLS section
 ```ini
 [server]
 PROTOCOL = https
 CERT_FILE = ../pki/gitea/cert.pem
 KEY_FILE = ../pki/gitea/key.pem
 ```
+**NOTe**: Don't forget top restart the server
 
 ### Docker compose
 
-- Create a docker compose file 
+- Create a docker compose file as documented [here](https://docs.gitea.com/installation/install-with-docker)
 ```bash
 cat << EOF > docker-compose.yml
 version: "3"
