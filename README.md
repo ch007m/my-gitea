@@ -47,9 +47,9 @@ EOF
 ```
 - Launch the gitea server
 ```bash
-GITEA_WORK_DIR=$HOME/code/gitea/my-gitea \
-GITEA_CUSTOM=$GITEA_WORK_DIR/custom \
-  gitea web
+export GITEA_WORK_DIR=$HOME/code/gitea/my-gitea
+export GITEA_CUSTOM=$GITEA_WORK_DIR/custom
+gitea web
 ```
 - Create an admin user
 ```bash
