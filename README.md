@@ -12,14 +12,14 @@ Table of Contents
 
 ## Instructions
 
-This project explains how to run locally (or using docker) a gitea instance like to create a selfsigned CA certificate exposing 
+This project explains how to run locally (or using docker) a gitea instance like how to create a selfsigned CA certificate exposing 
 the server using HTTPS with minimal effort ;-)
 
 ### Gitea binary
 
 - Download the binary (see [doc](https://docs.gitea.com/installation/install-from-binary))
 ```bash
-wget -O gitea https://dl.gitea.com/gitea/1.21.3/gitea-1.21.3-darwin-10.12-arm64
+wget -O gitea https://dl.gitea.com/gitea/1.21.3/gitea-1.21.5-darwin-10.12-arm64
 chmod +x gitea
 ```
 or install it using `homebrew` tool: `brew install gitea`
@@ -49,7 +49,7 @@ EOF
 ```bash
 GITEA_WORK_DIR=$HOME/code/gitea/my-gitea \
 GITEA_CUSTOM=$GITEA_WORK_DIR/custom \
-  gitea web -c custom/conf/app.ini
+  gitea web
 ```
 - Create an admin user
 ```bash
@@ -103,11 +103,18 @@ and launch the container
 docker-compose down; docker-compose up -d; docker-compose logs -f
 ```
 
+### Test me
+
+See: [curl-gitea.md](curl-gitea.md)
+
 ### PKI
 
 This section describes different approaches to generate a selfsigned certificate for the `localhost` including also a [CA](https://en.wikipedia.org/wiki/Certificate_authority) (not trusted) certificate to be used by the gitea server.
 
-**NOTE**: You can also use [certbot](https://github.com/certbot/certbot) if you would like to generate a certificate for a domain name (e.g gitea.example.com, etc). 
+To add the certificate generated to your keychain tool, execute by example on macOS the following command:
+`sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain <CERTIFICATE_FILE>`
+
+**NOTE**: You can also use [certbot](https://github.com/certbot/certbot) if you would like to generate a certificate for a domain name (e.g. gitea.example.com, etc.). 
 
 **IMPORTANT**: If you plan to run gitea on kubernetes/openshift, then we recommend to use the [cert-manager](https://cert-manager.io/docs/) tool to generate a certificate for your domain name. See this project: https://github.com/snowdrop/pki?tab=readme-ov-file#create-a-pkcs12-using-cert-manager
 
@@ -115,7 +122,7 @@ This section describes different approaches to generate a selfsigned certificate
 
 To generate a certificate which is also its own CA & key
 ```bash
-mkdir -p pki; cd pki
+mkdir -p pki/gitea; cd pki/gitea
 gitea cert --host localhost -ca
 ```
 #### OpenSSL
