@@ -74,6 +74,19 @@ KEY_FILE = ../pki/gitea/key.pem
 
 ### Deploy gitea on a k8s cluster
 
+Generate first a new selfsigned CA certificate and create the secret within `gitea` namespace
+```bash
+gitea cert --host gitea.localtest.me --ca
+mv cert.pem gitea-localtest-me.pem
+mv key.pem gitea-localtest-me.key
+k -n gitea create secret tls gitea-tls --cert=gitea-localtest-me.pem --key=gitea-localtest-me.key
+```
+**Important**: Don't forget to set this env variable before to start backstage
+```bash
+export NODE_EXTRA_CA_CERTS=$HOME/code/gitea/my-gitea/pki/gitea/gitea-localtest-me.pem 
+```
+
+Generate the helm values and deploy the helm chart
 ```bash
 cat <<EOF > helm-values.yml
 redis-cluster:
@@ -115,6 +128,10 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
+  tls:
+    - secretName: gitea-tls
+      hosts:
+        - gitea.localtest.me
 EOF
 helm install gitea gitea-charts/gitea -n gitea --create-namespace -f helm-values.yml
 ```
