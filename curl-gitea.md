@@ -49,7 +49,7 @@ curl -k -X POST\
 ## Create a new org
 
 ```bash
-export ORG_NAME="ch007m"
+export ORG_NAME="qshift"
 curl -kv -X POST \
   "$GITEA_API_URL/v1/orgs" \
   -H 'accept: application/json' \

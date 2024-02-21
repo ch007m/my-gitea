@@ -2,20 +2,23 @@ Table of Contents
 =================
 
 * [Instructions](#instructions)
-    * [Gitea binary](#gitea-binary)
-    * [Docker compose](#docker-compose)
-    * [PKI](#pki)
-        * [Gitea client](#gitea-client)
-        * [OpenSSL](#openssl)
-        * [mkcert](#mkcert)
-        * [minica](#minica)
+    * [Get Gitea binary](#get-gitea-binary)
+    * [Run gitea as standalone server](#run-gitea-as-standalone-server)
+    * [Deploy gitea on a k8s cluster](#deploy-gitea-on-a-k8s-cluster)
+    * [Run gitea as container](#run-gitea-as-container)
+* [Test me](#test-me)
+* [PKI](#pki)
+  * [Gitea client](#gitea-client)
+  * [OpenSSL](#openssl)
+  * [mkcert](#mkcert)
+  * [minica](#minica)
 
 ## Instructions
 
 This project explains how to run locally (or using docker) a gitea instance like how to create a selfsigned CA certificate exposing 
 the server using HTTPS with minimal effort ;-)
 
-### Gitea binary
+### Get Gitea binary
 
 - Download the binary (see [doc](https://docs.gitea.com/installation/install-from-binary))
 ```bash
@@ -25,6 +28,8 @@ chmod +x gitea
 or install it using `homebrew` tool: `brew install gitea`
 
 Next, verify that the binary is working: `gitea -h`
+
+### Run gitea as standalone server
 
 When this is done, you will have to create a config app.ini file with the following content:
 
@@ -67,7 +72,54 @@ KEY_FILE = ../pki/gitea/key.pem
 ```
 **NOTE**: Don't forget top restart the server
 
-### Docker compose
+### Deploy gitea on a k8s cluster
+
+```bash
+cat <<EOF > helm-values.yml
+redis-cluster:
+  enabled: false
+postgresql:
+  enabled: false
+postgresql-ha:
+  enabled: false
+
+persistence:
+  enabled: false
+
+gitea:
+  admin:
+    username: "gitea_admin"
+    password: "gitea_admin"
+    email: "gi@tea.com"
+  config:
+    database:
+      DB_TYPE: sqlite3
+    session:
+      PROVIDER: memory
+    cache:
+      ADAPTER: memory
+    queue:
+      TYPE: level
+
+service:
+  ssh:
+    type: NodePort
+    nodePort: 32222
+    externalTrafficPolicy: Local
+
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    - host: gitea.localtest.me
+      paths:
+        - path: /
+          pathType: Prefix
+EOF
+helm install gitea gitea-charts/gitea -n gitea --create-namespace -f helm-values.yml
+```
+
+### Run gitea as container
 
 - Create a docker compose file as documented [here](https://docs.gitea.com/installation/install-with-docker)
 ```bash
@@ -103,11 +155,11 @@ and launch the container
 docker-compose down; docker-compose up -d; docker-compose logs -f
 ```
 
-### Test me
+## Test me
 
 See: [curl-gitea.md](curl-gitea.md)
 
-### PKI
+## PKI
 
 This section describes different approaches to generate a selfsigned certificate for the `localhost` including also a [CA](https://en.wikipedia.org/wiki/Certificate_authority) (not trusted) certificate to be used by the gitea server.
 
