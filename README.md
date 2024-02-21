@@ -118,6 +118,10 @@ ingress:
 EOF
 helm install gitea gitea-charts/gitea -n gitea --create-namespace -f helm-values.yml
 ```
+To remove it
+```bash
+helm uninstall gitea -n gitea
+```
 
 ### Run gitea as container
 
