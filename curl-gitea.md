@@ -42,14 +42,14 @@ curl -k -X POST\
    "id": 1, // This is the ID of the gitea_admin account
    "key": "ssh-rsa AAAAB3Nz...KBE1ecj7WSL9",
    "read_only": true,
-   "title": "ch007m@gmail.com"
+   "title": "org1@gmail.com"
 }'
 ```
 
 ## Create a new org
 
 ```bash
-export ORG_NAME="qshift"
+export ORG_NAME="org1"
 curl -kv -X POST \
   "$GITEA_API_URL/v1/orgs" \
   -H 'accept: application/json' \
@@ -61,7 +61,7 @@ curl -kv -X POST \
 ## Get a new org
 
 ```bash
-export ORG_NAME="ch007m"
+export ORG_NAME="org1"
 curl -k -X GET \
   "$GITEA_API_URL/v1/orgs/$ORG_NAME" \
   -H 'accept: application/json' \
@@ -73,8 +73,8 @@ curl -k -X GET \
 
 ```bash
 export REPO_NAME="dummy"
-export REPO_DESCRIPTION="dummy"
-export ORG_NAME="ch007m"
+export REPO_DESCRIPTION="dummy dummy"
+export ORG_NAME="org1"
 
 curl -kv \
   "$GITEA_API_URL/v1/orgs/$ORG_NAME/repos" \
@@ -82,22 +82,35 @@ curl -kv \
   -u "$GITEA_USERNAME:$GITEA_PASSWORD" \
   -H 'Content-Type: application/json' \
   -d '{
+     "auto_init": true,
      "default_branch": "main",
      "description": "'"$REPO_DESCRIPTION"'",
      "name": "'"$REPO_NAME"'",
-     "private": false,
-     "readme": "'"$REPO_DESCRIPTION"'"
+     "readme": "Default",
+     "private": false
 }'
 ```
 
 ## Get an org's repo
 
 ```bash
-export ORG_NAME="ch007m"
+export ORG_NAME="org1"
 export REPO_NAME="dummy"
 curl -kv \
   "$GITEA_API_URL/v1/repos/$ORG_NAME/$REPO_NAME" \
   -H 'accept: application/json'
+```
+
+## Delete an org's repo
+
+```bash
+export REPO_NAME="dummy"
+export ORG_NAME="org1"
+curl -k -X 'DELETE' \
+  "$GITEA_API_URL/v1/repos/$ORG_NAME/$REPO_NAME" \
+  -u "$GITEA_USERNAME:$GITEA_PASSWORD" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json'
 ```
 
 ## Get repo content of file: catalog-info.yaml
@@ -133,18 +146,6 @@ curl -v \
 ```bash
 curl -X 'DELETE' \
   "$GITEA_API_URL/v1/repos/$GITEA_USERNAME/$REPO_NAME" \
-  -u "$GITEA_USERNAME:$GITEA_PASSWORD" \
-  -H 'accept: application/json' \
-  -H 'Content-Type: application/json'
-```
-
-## Delete an org's repo
-
-```bash
-export REPO_NAME="test1"
-export ORG_NAME="org1"
-curl -X 'DELETE' \
-  "$GITEA_API_URL/v1/repos/$ORG_NAME/$REPO_NAME" \
   -u "$GITEA_USERNAME:$GITEA_PASSWORD" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json'
