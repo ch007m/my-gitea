@@ -2,12 +2,14 @@
 
 Before to  curl a gitea instance, set the following properties and get a token
 
+```bash
 export GITEA_API_URL="https://localhost:3333/api"
 export GITEA_USERNAME="gitea_admin"
 export GITEA_PASSWORD="gitea_admin"
 
 TOKEN=$(curl -s -k -H "Content-Type: application/json" -d '{"name":"init","scopes": ["write:user", "write:admin", "write:repository"]}' -u $GITEA_USERNAME:$GITEA_PASSWORD $GITEA_API_URL/v1/users/$GITEA_USERNAME/tokens | jq -r .sha1)
 echo $TOKEN
+```
 
 ## Create a user
 
@@ -87,7 +89,7 @@ curl -kv \
      "description": "'"$REPO_DESCRIPTION"'",
      "name": "'"$REPO_NAME"'",
      "readme": "Default",
-     "private": false
+     "private": true
 }'
 ```
 

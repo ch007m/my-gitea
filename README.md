@@ -79,7 +79,7 @@ Generate first a new selfsigned CA certificate and create the secret within `git
 gitea cert --host gitea.localtest.me --ca
 mv cert.pem gitea-localtest-me.pem
 mv key.pem gitea-localtest-me.key
-k -n gitea create secret tls gitea-tls --cert=gitea-localtest-me.pem --key=gitea-localtest-me.key
+kubectl -n gitea create secret tls gitea-tls --cert=gitea-localtest-me.pem --key=gitea-localtest-me.key
 ```
 **Important**: Don't forget to set this env variable before to start backstage
 ```bash
