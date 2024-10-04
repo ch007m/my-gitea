@@ -22,7 +22,7 @@ the server using HTTPS with minimal effort ;-)
 
 - Download the binary (see [doc](https://docs.gitea.com/installation/install-from-binary))
 ```bash
-wget -O gitea https://dl.gitea.com/gitea/1.21.3/gitea-1.21.5-darwin-10.12-arm64
+wget -O gitea https://dl.gitea.com/gitea/1.22.2/gitea-1.21.2-darwin-10.12-arm64
 chmod +x gitea
 ```
 or install it using `homebrew` tool: `brew install gitea`
